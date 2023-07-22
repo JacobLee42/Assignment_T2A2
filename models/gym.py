@@ -10,6 +10,7 @@ class Gym(db.Model):
     phone = db.Column(db.Integer)
     style = db.Column(db.String(100))
     description = db.Column(db.Text)
+    title = db.Column(db.String(100))
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
@@ -19,9 +20,9 @@ class GymSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['name'])
 
     class Meta:
-        fields = ('id', 'name', 'address', 'phone', 'style', 'description', 'user' )
+        fields = ('id', 'name', 'address', 'phone', 'title', 'style', 'description', 'user' )
         ordered = True
-        
+
 gym_schema = GymSchema()
 gyms_schema = GymSchema(many=True)
 
