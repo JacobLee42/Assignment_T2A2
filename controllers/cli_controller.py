@@ -2,6 +2,7 @@ from flask import Blueprint
 from init import db, bcrypt
 from models.user import User
 from models.gym import Gym
+from models.comment import Comment
 
 db_commands = Blueprint('db', __name__)
 
@@ -81,6 +82,29 @@ def seed_db():
     ]
 
     db.session.add_all(gyms)
+
+    comments = [
+        Comment(
+            message="Comment 1",
+            user=users[0],
+            gym=gyms[0]
+        ),
+        Comment(
+            message="Comment 2",
+            user=users[1],
+            gym=gyms[1]
+
+        ),
+        Comment(
+            message="Comment 3",
+            user=users[1],
+            gym=gyms[2]
+
+        )
+
+    ]
+
+    db.session.add_all(comments)
 
     db.session.commit()
 
