@@ -15,12 +15,14 @@ class Gym(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     user = db.relationship('User', back_populates='gyms')
+    comments = db.relationship('Comment', back_populates='gym', cascade='all, delete')
 
 class GymSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['name'])
+    comments = fields.List(fields.Nested('CommentSchema'), exclude=('gym'))
 
     class Meta:
-        fields = ('id', 'name', 'address', 'phone', 'title', 'style', 'description', 'user' )
+        fields = ('id', 'name', 'address', 'phone', 'title', 'style', 'description', 'user', 'comments' )
         ordered = True
 
 gym_schema = GymSchema()
