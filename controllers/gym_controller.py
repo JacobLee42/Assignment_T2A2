@@ -2,15 +2,15 @@ from flask import Blueprint, request
 from init import db
 from models.gym import Gym, gyms_schema, gym_schema
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from models.comment import Comment, comment_schema, comments_schema
 from controllers.comment_controller import comments_bp
+from datetime import date
 
 gyms_bp = Blueprint('gyms', __name__, url_prefix='/gyms')
 gyms_bp.register_blueprint(comments_bp, url_prefix='/<int:gym_id>/comments')
 
 @gyms_bp.route('/')
 def get_all_gyms():
-    stmt = db.select(Gym)
+    stmt = db.select(Gym).order_by(Gym.date.desc())
     gyms = db.session.scalars(stmt)
     return gyms_schema.dump(gyms)
 
@@ -34,6 +34,7 @@ def create_gym():
         phone=body_data.get('phone'),
         style=body_data.get('style'),
         description=body_data.get('description'),
+        date=date.today(),
         user_id=get_jwt_identity()
     )
 

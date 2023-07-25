@@ -3,7 +3,7 @@ from init import db, bcrypt
 from models.user import User
 from models.gym import Gym
 from models.comment import Comment
-
+from datetime import date
 db_commands = Blueprint('db', __name__)
 
 @db_commands.cli.command('create')
@@ -41,6 +41,7 @@ def seed_db():
             phone='0434094244',
             style='Aikido',
             description='Northside Aikido Osu Dojo is located at the Caboolture Police citizens Youth Club at 2 Toovey St Caboolture. Aikido is a non-aggressive, non-competitive and is a purely defensive art. It places great emphasis on relaxation and calmness of mind and physical strength plays no part. Because of this, anyone can learn the art of Aikido.',
+            date=date.today(),
             user=users[0]
         ),
         Gym(
@@ -50,6 +51,7 @@ def seed_db():
             phone='0407627869',
             style='Boxing',
             description='Caboolture Boxing Clubs trainer Don Tindall has been training champion boxers for over 30 years experience in the sport and trains both amateur and pro boxers. Beginners welcome!',
+            date=date.today(),
             user=users[0]
         ),
         Gym(
@@ -59,6 +61,7 @@ def seed_db():
             phone='0426283877',
             style='Mixed Martial Arts, Brizilian Jujitsu, Boxing, Muay Thai',
             description='Infinity Morayfield is a full time academy conveniently located at Morayfield Shopping Centre, Morayfield QLD. We hold classes from Parents and bub classes from 2-4 years old up to adult classes. Classes run 6 days a week Monday to Saturday with a variety of class times to suit everyone. Come on down and train with us!',
+            date=date.today(),
             user=users[0]
         ),
         Gym(
@@ -68,6 +71,7 @@ def seed_db():
             phone='0411261272',
             style='Wing Chun Kung Fu',
             description='Wing Chun Kung Fu is the martial art developed for everyone! We offer family self defence classes for both kids and adults! Wing Chun is a close-quarters system of self-defense.',
+            date=date.today(),
             user=users[0]
         ),
         Gym(
@@ -77,6 +81,7 @@ def seed_db():
             phone='0487681849',
             style='Taekwondo',
             description='New, current and fromer members always welcome! All ages and fitness levels. Come along anytime! Founded in Australia in 1970 it is Australias first martial arst school, with branches Australia wide.',
+            date=date.today(),
             user=users[0]
         ),
     ]
@@ -85,20 +90,20 @@ def seed_db():
 
     comments = [
         Comment(
-            message="Comment 1",
+            message="Northside Aikido was fun! ",
             user=users[0],
             gym=gyms[0]
         ),
         Comment(
-            message="Comment 2",
+            message="Caboolture boxing club has been established for over 30 years at the PCYC in Caboolture. Cheap training costs and keeps you fit!",
             user=users[1],
             gym=gyms[1]
 
         ),
         Comment(
-            message="Comment 3",
+            message="Rhee Taekwondo was a lot of fun. They took great care and patience with me when I was a beginner. I would recommend to anyone wanting to give it a go!",
             user=users[1],
-            gym=gyms[2]
+            gym=gyms[4]
 
         )
 
