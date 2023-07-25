@@ -4,6 +4,7 @@ from models.gym import Gym, gyms_schema, gym_schema
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from controllers.comment_controller import comments_bp
 from datetime import date
+from models.user import User
 
 gyms_bp = Blueprint('gyms', __name__, url_prefix='/gyms')
 gyms_bp.register_blueprint(comments_bp, url_prefix='/<int:gym_id>/comments')
@@ -46,6 +47,9 @@ def create_gym():
 @gyms_bp.route('/<int:id>', methods={'DELETE'})
 @jwt_required()
 def delete_one_gym(id):
+    is_admin = authorise_as_admin()
+    if not is_admin:
+        return {'error': 'Not authorised to delete gyms'}, 403
     stmt = db.select(Gym).filter_by(id=id)
     gym = db.session.scalar(stmt)
     if gym:
@@ -73,4 +77,10 @@ def update_one_gym(id):
         return gym_schema.dump(gym)
     else:
         return {'error': f'Gym not found with id {id}'}, 404
+    
+def authorise_as_admin():
+    user_id = get_jwt_identity()
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
+    return user.is_admin
     
