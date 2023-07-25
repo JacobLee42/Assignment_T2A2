@@ -1,5 +1,6 @@
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Length, And, Regexp
 
 class Gym(db.Model):
     __tablename__= "gyms"
@@ -21,6 +22,12 @@ class Gym(db.Model):
 class GymSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['name'])
     comments = fields.List(fields.Nested('CommentSchema'), exclude=('gym'))
+
+    title = fields.String(required=True, validate=And(
+        Length(min=2, error='Title must be at least 2 characters long'),
+        Regexp('^[a-zA-Z0-9 ]+$', error='Only letters, spaces and numbers are allowed')
+        
+        ))
 
     class Meta:
         fields = ('id', 'name', 'address', 'phone', 'title', 'style', 'description', 'date', 'user', 'comments' )

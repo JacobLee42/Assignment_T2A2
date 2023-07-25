@@ -26,7 +26,7 @@ def get_one_gym(id):
 @gyms_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_gym():
-    body_data = request.get_json()
+    body_data = gym_schema.load(request.get_json())
     gym = Gym(
         title=body_data.get('title'),
         name=body_data.get('name'),
@@ -58,7 +58,7 @@ def delete_one_gym(id):
 @gyms_bp.route('/<int:id>', methods=['PUT', 'PATCH']) 
 @jwt_required()
 def update_one_gym(id): 
-    body_data = request.get_json()
+    body_data = gym_schema.load(request.get_json(), partial=True)
     stmt = db.select(Gym).filter_by(id=id)
     gym = db.session.scalar(stmt)
     if gym:
