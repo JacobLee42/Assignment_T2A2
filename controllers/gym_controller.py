@@ -66,6 +66,8 @@ def update_one_gym(id):
     stmt = db.select(Gym).filter_by(id=id)
     gym = db.session.scalar(stmt)
     if gym:
+        if str(gym.user_id) != get_jwt_identity():
+            return {'error': 'Only the owner of the gym can edit'}, 403
         gym.title = body_data.get('title') or gym.title
         gym.description = body_data.get('description') or gym.description
         gym.name = body_data.get('name') or gym.name 
